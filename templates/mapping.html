@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>Proj5-Mapping</title>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+ <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+
+</head>
+<body>
+
+
+  <div id="map" style = "height: 90%;"></div>
+
+  <script>
+  var length = {{ session.length }};
+  var res = {{session.res | safe }};
+  var lat = {{session.lat | safe }};
+  var lon = {{session.lon | safe }};
+  // initialize the map
+  var map = L.map('map').setView([44.0519, -123.0867], 13);
+
+  // load a tile layer
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+    id: 'elenavegafujioka.p2733de4',
+    accessToken: 'pk.eyJ1IjoiZWxlbmF2ZWdhZnVqaW9rYSIsImEiOiJjaWs0bThwenIwMDU0djRrdHlnd3B2emdwIn0.s-Qn2_gtyYriCPCT8y-QCA'
+}).addTo(map);
+
+for(i =0; i<length; i++ ){
+  var marker = L.marker([lat[i], lon[i]]).addTo(map);
+  var popup = L.popup()
+  .setLatLng([lat[i], lon[i]])
+  .setContent(res[i]);
+  marker.bindPopup(popup);
+
+}
+
+  </script>
+</body>
+</html>
